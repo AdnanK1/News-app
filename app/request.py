@@ -1,20 +1,18 @@
 from app import app
 from newsapi import NewsApiClient
 
-def get_news():
+def get_head_news():
     #Getting api key
     newsapi = NewsApiClient(api_key = app.config['NEWS_API_KEY'])
     
     #headlines
     top_headlines = newsapi.get_top_headlines(sources= 'cnn,bbc-news')
-    #main articles
-    all_articles = newsapi.get_everything(sources= 'cnn,bbc-news')
+    
 
     #Fetch all articles of the top headlines
     top_articles = top_headlines['articles']
 
-    #Fetch all articles
-    a_articles = all_articles['articles']
+    
 
     #make a list of contents to store the values on the list
     news = []
@@ -37,6 +35,15 @@ def get_news():
         head = zip(news,desc,img,p_date,url)
         return head
 
+def get_main_news():
+    #Getting api key
+    newsapi = NewsApiClient(api_key = app.config['NEWS_API_KEY'])
+
+    #main articles
+    all_articles = newsapi.get_everything(sources= 'cnn,bbc-news')
+
+    #Fetch all articles
+    a_articles = all_articles['articles']
     #make a list of contents to store the values on the list
     news_all = []
     desc_all = []
