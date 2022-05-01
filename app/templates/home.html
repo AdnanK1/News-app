@@ -5,22 +5,43 @@ Home Page
 {% endblock %}
 <!--Body-->
 {% block content %}
-<h1 class="text-center">HOTTEST NEWS</h1>
-    <ul>
-        {% for article in articles %}
-        <div class="row row-cols-1 row-cols-md-1 g-4 d-flex ">
-            <div class="col p-3">
-                <div class="card p-3">
-                    <img src="{{article.img}}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h3 class="card-title text-warning">{{article.title}}</h3>
-                        <p class="card-text text-bold text-dark fs-3"> {{article.desc}} </p>
-                        <p class="card-text text-center text-info display-5">{{ article.p_date }}</p>
-                    </div>
-                </div>
+<div class="container">
+    <h1 class="h3 mb-3 font-weight-normal">
+        Header
+    </h1>
+    {% for title,desc,img,p_date,url in contents %}
+    <div class="wrapper">
+        <div class="item">
+            <a href="{{url}}"><img src="{{img}}" alt="image" width="450" height="300"></a>
+        </div>
+        <div class="c-box">
+            <div class="content"><a href="{{url}}"><h2>{{ title }}</h2></a></div>
+            <div class="content"><a href="{{url}}"><p>{{ desc }}</p></a></div>
+            <div class="content">
+                <p style="color: lawngreen;">Published Date:</p>
+                <p>{{p_date}}</p>
             </div>
         </div>
-        {% endfor %}
-    </ul>
-    
+    </div>
+    {% endfor %}
+    <h1 class="h3 mb-3 font-weight-normal">
+        Main News
+    </h1>
+    {% for title,desc,img,p_date,url in all %}
+    <div class="wrapper">
+        <div class="item">
+            <a href="{{url}}"><img src="{{img}}" alt="image"width="450" height="300"></a>
+        </div>
+        <div class="c-box">
+            <div class="content"><a href="{{url}}"><h2>{{ title }}</h2></a></div>
+            <div class="content"><a href="{{url}}"><p>{{ desc }}</p></a></div>
+            <div class="content">
+                <p style="color: lawngreen;">Published Date:</p>
+                <p>{{p_date}}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
 {% endblock %}
