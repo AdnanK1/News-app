@@ -1,37 +1,58 @@
-from concurrent.futures import process
 from app import app
-import urllib.request,json
-from .models import newsarticles
+from newsapi import NewsApiClient
 
-Newsarticles = newsarticles.Newsarticles
+def get_news():
+    #Getting api key
+    newsapi = NewsApiClient(api_key = app.config['NEWS_API_KEY'])
+    
+    #headlines
+    top_headlines = newsapi.get_top_headlines(sources= 'cnn,bbc-news')
+    #main articles
+    all_articles = newsapi.get_everything(sources= 'cnn,bbc-news')
 
-#Getting api key
-api_key = app.config['NEWS_API_KEY']
+    #Fetch all articles of the top headlines
+    top_articles = top_headlines['articles']
 
-#Getting the base url
-base_url = app.config['NEWS_API_BASE_URL']
+    #Fetch all articles
+    a_articles = all_articles['articles']
 
-def get_news(source):
-    get_news_url = base_url.format(source,api_key)
+    #make a list of contents to store the values on the list
+    news = []
+    desc = []
+    img = []
+    p_date = []
+    url = []
 
-    with urllib.request.urlopen(get_news_url) as url:
-        get_news_data = url.read()
-        get_news_response = json.loads(get_news_data)
+    #fetch all the contents of the articles by using for loop
+    for i in range(len(top_articles)):
+        head_article = top_articles[i]
 
-        news_results = None
-        if get_news_response['results']:
-            news_results_list = get_news_response['results']
-            news_results = process_results(news_results_list)
+        news.append(head_article['title'])
+        desc.append(head_article['description'])
+        img.append(head_article['urlToImage'])
+        p_date.append(head_article['publishedAt'])
+        url.append(head_article['url'])
 
-    return news_results
+        #make a zip for finding the contents directly
+        head = zip(news,desc,img,p_date,url)
+        return head
 
-def process_results(news_list):
-    news_results = []
-    for news_item in news_list:
-        title = news_item.get('title')
-        desc = news_item.get('description')
-        img = news_item.get('urlToImage')
-        time = news_item.get('publishedAt')
-        url = news_item.get('url')
+    #make a list of contents to store the values on the list
+    news_all = []
+    desc_all = []
+    img_all = []
+    p_date_all = []
+    url_all = []
 
-    return news_results
+    #fetch all the contents of the articles by using for loop
+    for j in range(len(a_articles)):
+        a_article = a_articles[j]
+        #append all the contents in each of the lists
+        news_all.append(a_article['title'])
+        desc_all.append(a_article['description'])
+        img_all.append(a_article['urlToImage'])
+        p_date_all.append(a_article['publishedAt'])
+        url_all.append(a_article['url'])
+
+        main = zip(news_all,desc_all,img_all,p_date_all,url_all)
+        return main
